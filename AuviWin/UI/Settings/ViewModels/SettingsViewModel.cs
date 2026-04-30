@@ -1,5 +1,3 @@
-using AuviWin.UI.Settings.ViewModels;
-
 namespace AuviWin.UI.Settings.ViewModels;
 
 /// <summary>Root view model — DataContext for SettingsWindow.</summary>

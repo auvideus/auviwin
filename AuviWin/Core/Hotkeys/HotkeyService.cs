@@ -17,10 +17,11 @@ public sealed class HotkeyService : IHotkeyService
     private readonly Dictionary<int, Hotkey> _registered = [];
     private readonly ConcurrentQueue<Action> _invocations = new();
     private readonly SynchronizationContext _uiContext;
+    private readonly ManualResetEventSlim _startupDone = new(false);
     private nint _hwnd;
+    private int _startupError;
     private Thread? _thread;
     private int _nextId = 1;
-    private volatile bool _ready;
     private volatile bool _disposed;
 
     public event EventHandler<int>? HotkeyPressed;
@@ -34,11 +35,11 @@ public sealed class HotkeyService : IHotkeyService
         _thread.SetApartmentState(ApartmentState.STA);
         _thread.Start();
 
-        // Spin until the hidden window is created on the hotkey thread
-        while (!_ready) Thread.SpinWait(100);
+        if (!_startupDone.Wait(5000))
+            throw new TimeoutException("HotkeyService: hotkey thread did not start within 5 seconds.");
         if (_hwnd == 0)
             throw new InvalidOperationException(
-                $"Failed to create hotkey message window. Win32 error: {Marshal.GetLastWin32Error()}");
+                $"Failed to create hotkey message window. Win32 error: {_startupError}");
     }
 
     public int Register(Hotkey hotkey)
@@ -121,8 +122,10 @@ public sealed class HotkeyService : IHotkeyService
             finally { done.Set(); }
         });
 
-        PostMessage(_hwnd, (int)WM_APP_INVOKE, 0, 0);
-        done.Wait();
+        if (!PostMessage(_hwnd, (int)WM_APP_INVOKE, 0, 0))
+            throw new InvalidOperationException("Failed to post message to hotkey thread.");
+        if (!done.Wait(5000))
+            throw new TimeoutException("Hotkey thread did not respond within 5 seconds.");
         captured?.Throw();
     }
 
@@ -131,7 +134,8 @@ public sealed class HotkeyService : IHotkeyService
     private void MessageLoop()
     {
         _hwnd = CreateWindowHidden();
-        _ready = true;
+        if (_hwnd == 0) _startupError = Marshal.GetLastWin32Error();
+        _startupDone.Set();
         if (_hwnd == 0) return;
 
         while (GetMessage(out var msg, nint.Zero, 0, 0) > 0)

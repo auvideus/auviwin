@@ -92,14 +92,18 @@ public sealed partial class DisplayAudioSyncViewModel : ObservableObject
         RefreshActiveConfig(cfg);
     }
 
+    private const string UnavailableSuffix = " (unavailable)";
+
     private AudioDevice? LoadDeviceSelection(DisplayAudioConfig? config, List<AudioDevice> activeDevices)
     {
         if (config?.AudioDeviceId is null) return null;
         var match = activeDevices.FirstOrDefault(d => d.Id == config.AudioDeviceId);
         if (match is not null) return match;
-        // Device is offline — add a placeholder so it shows in the combo and stays selected
+        // Device is offline — reuse an existing placeholder if already added (e.g. ConfigA and ConfigB share the same offline device)
+        var existing = AllDevices.FirstOrDefault(d => d.Id == config.AudioDeviceId);
+        if (existing is not null) return existing;
         var placeholder = new AudioDevice(config.AudioDeviceId,
-            (config.AudioDeviceName ?? config.AudioDeviceId) + " (unavailable)");
+            (config.AudioDeviceName ?? config.AudioDeviceId) + UnavailableSuffix);
         AllDevices.Add(placeholder);
         return placeholder;
     }
@@ -132,7 +136,9 @@ public sealed partial class DisplayAudioSyncViewModel : ObservableObject
         var cfg = _settings.Current.DisplayAudioSync;
         cfg.ConfigA ??= new DisplayAudioConfig();
         cfg.ConfigA.AudioDeviceId = value.Id;
-        cfg.ConfigA.AudioDeviceName = value.Name.Replace(" (unavailable)", "");
+        cfg.ConfigA.AudioDeviceName = value.Name.EndsWith(UnavailableSuffix)
+            ? value.Name[..^UnavailableSuffix.Length]
+            : value.Name;
         _settings.Save();
     }
 
@@ -142,7 +148,9 @@ public sealed partial class DisplayAudioSyncViewModel : ObservableObject
         var cfg = _settings.Current.DisplayAudioSync;
         cfg.ConfigB ??= new DisplayAudioConfig();
         cfg.ConfigB.AudioDeviceId = value.Id;
-        cfg.ConfigB.AudioDeviceName = value.Name.Replace(" (unavailable)", "");
+        cfg.ConfigB.AudioDeviceName = value.Name.EndsWith(UnavailableSuffix)
+            ? value.Name[..^UnavailableSuffix.Length]
+            : value.Name;
         _settings.Save();
     }
 }

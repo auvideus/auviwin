@@ -83,6 +83,7 @@ public sealed class TrayIconManager : IDisposable
     {
         _pendingTimer?.Dispose();
         _pendingTimer = null;
+        if (_disposed || !_added) return;
         var title = System.Threading.Interlocked.Exchange(ref _pendingTitle, null);
         var msg   = System.Threading.Interlocked.Exchange(ref _pendingMessage, null);
         if (title is not null)
@@ -206,6 +207,11 @@ public sealed class TrayIconManager : IDisposable
         if (_disposed) return;
         _disposed = true;
 
+        _pendingTimer?.Dispose();
+        _pendingTimer = null;
+        _pendingTitle = null;
+        _pendingMessage = null;
+
         if (_added && _hwnd != 0)
         {
             var data = BuildNotifyIconData();
@@ -221,6 +227,7 @@ public sealed class TrayIconManager : IDisposable
         SettingsRequested = null;
         ExitRequested = null;
         NextDeviceRequested = null;
+        PreviousDeviceRequested = null;
         ToggleDisplayRequested = null;
     }
 

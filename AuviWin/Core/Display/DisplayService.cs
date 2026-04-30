@@ -93,6 +93,8 @@ public sealed class DisplayService : IDisplayService
     private static DISPLAYCONFIG_PATH_INFO[] DeserializePaths(byte[] bytes)
     {
         int sz = Marshal.SizeOf<DISPLAYCONFIG_PATH_INFO>();
+        if (bytes.Length % sz != 0)
+            throw new InvalidOperationException($"Display snapshot path data is corrupt: {bytes.Length} bytes is not a multiple of {sz}.");
         int count = bytes.Length / sz;
         var result = new DISPLAYCONFIG_PATH_INFO[count];
         for (int i = 0; i < count; i++)
@@ -128,6 +130,8 @@ public sealed class DisplayService : IDisplayService
     private static DISPLAYCONFIG_MODE_INFO[] DeserializeModes(byte[] bytes)
     {
         int sz = Marshal.SizeOf<DISPLAYCONFIG_MODE_INFO>();
+        if (bytes.Length % sz != 0)
+            throw new InvalidOperationException($"Display snapshot mode data is corrupt: {bytes.Length} bytes is not a multiple of {sz}.");
         int count = bytes.Length / sz;
         var result = new DISPLAYCONFIG_MODE_INFO[count];
         for (int i = 0; i < count; i++)
