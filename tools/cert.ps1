@@ -11,6 +11,7 @@
 .NOTES
     The cert CN must exactly match the <Identity Publisher> in App/Package.appxmanifest.
     To rename the app, update $CertSubject here and in the manifest.
+    Runs without Administrator privileges (uses CurrentUser certificate stores).
 #>
 
 param(
@@ -25,7 +26,7 @@ Set-Location $PSScriptRoot\..
 Write-Host "=== AuviWin dev certificate setup ===" -ForegroundColor Cyan
 
 # Check for existing cert
-$existing = Get-ChildItem "Cert:\LocalMachine\My" -ErrorAction SilentlyContinue |
+$existing = Get-ChildItem "Cert:\CurrentUser\My" -ErrorAction SilentlyContinue |
     Where-Object { $_.Subject -eq $CertSubject -and $_.NotAfter -gt (Get-Date) }
 
 if ($existing) {
@@ -36,7 +37,7 @@ if ($existing) {
     $cert = New-SelfSignedCertificate `
         -Type CodeSigningCert `
         -Subject $CertSubject `
-        -CertStoreLocation "Cert:\LocalMachine\My" `
+        -CertStoreLocation "Cert:\CurrentUser\My" `
         -KeyUsage DigitalSignature `
         -FriendlyName "AuviWin MSIX Dev Signing" `
         -NotAfter (Get-Date).AddYears(10)
@@ -50,18 +51,18 @@ Export-PfxCertificate -Cert $cert -FilePath $CertPfx -Password $securePassword |
 Write-Host "Exported to: $CertPfx"
 
 # Trust for MSIX sideloading
-$trusted = Get-ChildItem "Cert:\LocalMachine\TrustedPeople" -ErrorAction SilentlyContinue |
+$trusted = Get-ChildItem "Cert:\CurrentUser\TrustedPeople" -ErrorAction SilentlyContinue |
     Where-Object { $_.Thumbprint -eq $cert.Thumbprint }
 
 if (-not $trusted) {
-    Write-Host "Importing into LocalMachine\TrustedPeople..."
+    Write-Host "Importing into CurrentUser\TrustedPeople..."
     Import-PfxCertificate `
         -FilePath $CertPfx `
-        -CertStoreLocation "Cert:\LocalMachine\TrustedPeople" `
+        -CertStoreLocation "Cert:\CurrentUser\TrustedPeople" `
         -Password $securePassword | Out-Null
     Write-Host "Trusted." -ForegroundColor Green
 } else {
-    Write-Host "Already trusted in LocalMachine\TrustedPeople." -ForegroundColor Green
+    Write-Host "Already trusted in CurrentUser\TrustedPeople." -ForegroundColor Green
 }
 
 Write-Host ""
