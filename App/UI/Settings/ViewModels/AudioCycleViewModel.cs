@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
-using AuviWin.Core.Display;
-using AuviWin.Core.Hotkeys;
+using App.Core.Audio;
+using App.Core.Configuration;
+using App.Core.Display;
+using App.Core.Hotkeys;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace AuviWin.UI.Settings.ViewModels;
+namespace App.UI.Settings.ViewModels;
 
 public sealed partial class AudioCycleViewModel : ObservableObject
 {

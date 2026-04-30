@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 
-namespace AuviWin.Core.Hotkeys;
+namespace App.Core.Hotkeys;
 
 /// <summary>
 /// Registers global hotkeys using a hidden Win32 message-only window on a dedicated STA thread.

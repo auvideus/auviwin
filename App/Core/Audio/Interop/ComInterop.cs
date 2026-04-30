@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace AuviWin.Core.Audio.Interop;
+namespace App.Core.Audio.Interop;
 
 // ── IMMDeviceEnumerator ──────────────────────────────────────────────────────
 

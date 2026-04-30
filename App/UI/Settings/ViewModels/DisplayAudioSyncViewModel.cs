@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
-using AuviWin.Core.Display;
+using App.Core.Audio;
+using App.Core.Configuration;
+using App.Core.Display;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace AuviWin.UI.Settings.ViewModels;
+namespace App.UI.Settings.ViewModels;
 
 public sealed partial class DisplayAudioSyncViewModel : ObservableObject
 {

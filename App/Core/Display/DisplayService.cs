@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace AuviWin.Core.Display;
+namespace App.Core.Display;
 
 /// <summary>
 /// Captures and restores display topologies using QueryDisplayConfig / SetDisplayConfig.

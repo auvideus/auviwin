@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
-using AuviWin.Core.Audio.Interop;
+using App.Core.Audio.Interop;
 
-namespace AuviWin.Core.Audio;
+namespace App.Core.Audio;
 
 /// <summary>
 /// Enumerates render devices and switches the system default using raw COM interop.

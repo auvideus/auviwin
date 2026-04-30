@@ -1,8 +1,8 @@
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
-using AuviWin.Core.Hotkeys;
+using App.Core.Audio;
+using App.Core.Configuration;
+using App.Core.Hotkeys;
 
-namespace AuviWin.Features.AudioCycle;
+namespace App.Features.AudioCycle;
 
 /// <summary>
 /// Listens for Next/Previous hotkeys and cycles the default render device

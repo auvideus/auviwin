@@ -1,4 +1,4 @@
-namespace AuviWin.Core.Hotkeys;
+namespace App.Core.Hotkeys;
 
 public interface IHotkeyService : IDisposable
 {

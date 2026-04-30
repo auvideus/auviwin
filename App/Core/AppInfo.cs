@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace AuviWin.Core;
+namespace App.Core;
 
 /// <summary>
 /// Central source of truth for the application name.

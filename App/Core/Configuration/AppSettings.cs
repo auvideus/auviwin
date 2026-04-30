@@ -1,7 +1,7 @@
-using AuviWin.Core.Display;
-using AuviWin.Core.Hotkeys;
+using App.Core.Display;
+using App.Core.Hotkeys;
 
-namespace AuviWin.Core.Configuration;
+namespace App.Core.Configuration;
 
 public sealed class AppSettings
 {

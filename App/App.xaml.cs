@@ -1,18 +1,18 @@
 ﻿using System.Windows;
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
-using AuviWin.Core.Display;
-using AuviWin.Core.Hotkeys;
-using AuviWin.Features.AudioCycle;
-using AuviWin.Features.DisplayAudioSync;
-using AuviWin.UI.Settings;
-using AuviWin.UI.Settings.ViewModels;
-using AuviWin.UI.Tray;
+using App.Core.Audio;
+using App.Core.Configuration;
+using App.Core.Display;
+using App.Core.Hotkeys;
+using App.Features.AudioCycle;
+using App.Features.DisplayAudioSync;
+using App.UI.Settings;
+using App.UI.Settings.ViewModels;
+using App.UI.Tray;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AuviWin;
+namespace App;
 
-public partial class App : Application
+public partial class WpfApp : Application
 {
     private ServiceProvider _services = null!;
     private TrayIconManager? _tray;

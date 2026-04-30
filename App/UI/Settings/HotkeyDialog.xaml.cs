@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Input;
-using AuviWin.Core.Hotkeys;
-using HotkeyModifiers = AuviWin.Core.Hotkeys.ModifierKeys;
+using App.Core.Hotkeys;
+using HotkeyModifiers = App.Core.Hotkeys.ModifierKeys;
 
-namespace AuviWin.UI.Settings;
+namespace App.UI.Settings;
 
 public sealed partial class HotkeyDialog : Window
 {

@@ -2,11 +2,11 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using AuviWin.Core;
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
+using App.Core;
+using App.Core.Audio;
+using App.Core.Configuration;
 
-namespace AuviWin.UI.Tray;
+namespace App.UI.Tray;
 
 /// <summary>
 /// Manages the system tray icon using raw Shell_NotifyIcon P/Invoke.

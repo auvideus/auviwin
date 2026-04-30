@@ -1,10 +1,11 @@
 using System.Windows;
 using System.Windows.Input;
-using AuviWin.Core;
-using AuviWin.Core.Hotkeys;
-using AuviWin.UI.Settings.ViewModels;
+using App.Core;
+using App.Core.Configuration;
+using App.Core.Hotkeys;
+using App.UI.Settings.ViewModels;
 
-namespace AuviWin.UI.Settings;
+namespace App.UI.Settings;
 
 public sealed partial class SettingsWindow : Window
 {
@@ -107,13 +108,13 @@ public sealed partial class SettingsWindow : Window
     }
 
     // Injected at construction time via DI
-    private AuviWin.Core.Configuration.SettingsService _settings = null!;
+    private SettingsService _settings = null!;
     public Action? SuspendHotkeys { get; set; }
     public Action? ResumeHotkeys { get; set; }
 
     public static SettingsWindow Create(
         SettingsViewModel vm,
-        AuviWin.Core.Configuration.SettingsService settings,
+        SettingsService settings,
         Action? suspendHotkeys = null,
         Action? resumeHotkeys = null)
     {

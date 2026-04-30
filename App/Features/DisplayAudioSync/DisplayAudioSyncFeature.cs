@@ -1,10 +1,10 @@
-using AuviWin.Core;
-using AuviWin.Core.Audio;
-using AuviWin.Core.Configuration;
-using AuviWin.Core.Display;
-using AuviWin.Core.Hotkeys;
+using App.Core;
+using App.Core.Audio;
+using App.Core.Configuration;
+using App.Core.Display;
+using App.Core.Hotkeys;
 
-namespace AuviWin.Features.DisplayAudioSync;
+namespace App.Features.DisplayAudioSync;
 
 /// <summary>
 /// On hotkey: detects which of the two saved display configs is active,

@@ -2,7 +2,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace AuviWin.Core.Configuration;
+namespace App.Core.Configuration;
 
 public sealed class SettingsService
 {

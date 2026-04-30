@@ -1,4 +1,4 @@
-<Window x:Class="AuviWin.UI.Settings.HotkeyDialog"
+<Window x:Class="App.UI.Settings.HotkeyDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Press a Hotkey" Height="140" Width="320"

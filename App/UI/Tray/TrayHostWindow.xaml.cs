@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace AuviWin.UI.Tray;
+namespace App.UI.Tray;
 
 public sealed partial class TrayHostWindow : Window
 {

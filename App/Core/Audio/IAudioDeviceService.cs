@@ -1,4 +1,4 @@
-namespace AuviWin.Core.Audio;
+namespace App.Core.Audio;
 
 public interface IAudioDeviceService
 {

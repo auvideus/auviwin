@@ -1,4 +1,4 @@
-namespace AuviWin.Core.Display;
+namespace App.Core.Display;
 
 public interface IDisplayService
 {
