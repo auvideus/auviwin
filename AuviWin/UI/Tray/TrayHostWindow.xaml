@@ -1,0 +1,9 @@
+<Window x:Class="AuviWin.UI.Tray.TrayHostWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Visibility="Hidden"
+        Width="0" Height="0"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"/>

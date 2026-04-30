@@ -1,0 +1,48 @@
+version: "3"
+
+vars:
+  DOTNET: '{{if eq OS "windows"}}C:\Program Files\dotnet\dotnet.exe{{else}}dotnet{{end}}'
+  PROJECT: AuviWin/AuviWin.csproj
+  PUBLISH_DIR: publish
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  build:
+    desc: Build the project (Debug)
+    cmds:
+      - '"{{.DOTNET}}" build {{.PROJECT}} -c Debug'
+
+  build:release:
+    desc: Build the project (Release)
+    cmds:
+      - '"{{.DOTNET}}" build {{.PROJECT}} -c Release'
+
+  run:
+    desc: Run the app (Debug)
+    cmds:
+      - '"{{.DOTNET}}" run --project {{.PROJECT}} -c Debug'
+
+  clean:
+    desc: Clean build outputs
+    cmds:
+      - '"{{.DOTNET}}" clean {{.PROJECT}}'
+
+  publish:
+    desc: Publish a self-contained single-file exe to ./publish
+    cmds:
+      - '"{{.DOTNET}}" publish {{.PROJECT}}
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o {{.PUBLISH_DIR}}'
+
+  restore:
+    desc: Restore NuGet packages
+    cmds:
+      - '"{{.DOTNET}}" restore {{.PROJECT}}'
