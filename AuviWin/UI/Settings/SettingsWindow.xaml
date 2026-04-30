@@ -1,0 +1,185 @@
+<Window x:Class="AuviWin.UI.Settings.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AuviWin.UI.Settings.ViewModels"
+        Title="AuviWin Settings" Height="520" Width="580"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Padding" Value="8"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="3,0"/>
+        </Style>
+    </Window.Resources>
+
+    <TabControl Margin="8">
+
+        <!-- ── Audio Cycle ─────────────────────────────────────────────── -->
+        <TabItem Header="Audio Cycle">
+            <StackPanel Margin="8">
+                <GroupBox Header="Active Devices (in cycle order)">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox x:Name="DeviceList"
+                                 ItemsSource="{Binding AudioCycle.AllDevices}"
+                                 Height="180">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+                            <Button Width="26" Height="26" Padding="0" HorizontalAlignment="Center"
+                                    Command="{Binding AudioCycle.MoveUpCommand}"
+                                    CommandParameter="{Binding ElementName=DeviceList, Path=SelectedItem}"
+                                    Margin="0,0,0,4">
+                                <Path Data="M 0,5 L 5,0 L 10,5 Z" Fill="Black"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                            <Button Width="26" Height="26" Padding="0" HorizontalAlignment="Center"
+                                    Margin="0"
+                                    Command="{Binding AudioCycle.MoveDownCommand}"
+                                    CommandParameter="{Binding ElementName=DeviceList, Path=SelectedItem}">
+                                <Path Data="M 0,0 L 5,5 L 10,0 Z" Fill="Black"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Hotkeys">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Next device:" VerticalAlignment="Center" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Margin="0,0,0,6"
+                                 Text="{Binding AudioCycle.NextHotkeyDisplay, Mode=OneWay}"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="Set" Margin="4,0,0,6"
+                                Click="SetNextHotkey_Click"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Previous device:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True"
+                                 Text="{Binding AudioCycle.PreviousHotkeyDisplay, Mode=OneWay}"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="Set"
+                                Click="SetPreviousHotkey_Click"/>
+                    </Grid>
+                </GroupBox>
+
+            </StackPanel>
+        </TabItem>
+
+        <!-- ── Display + Audio Sync ───────────────────────────────────── -->
+        <TabItem Header="Display + Audio">
+            <StackPanel Margin="8">
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Foreground="Gray"
+                           Text="Set up two display configurations. Use 'Capture' when your display is in the desired state, then assign the audio device for each config."/>
+                <TextBlock Margin="0,0,0,8" FontWeight="SemiBold"
+                           Text="{Binding DisplayAudioSync.ActiveConfigStatus, Mode=OneWay}"/>
+
+                <GroupBox Header="Config A">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,6"
+                                 Text="{Binding DisplayAudioSync.ConfigAName, UpdateSourceTrigger=LostFocus}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Display:" VerticalAlignment="Center" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Margin="0,0,0,6"
+                                 Text="{Binding DisplayAudioSync.ConfigAStatus, Mode=OneWay}"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="Capture now" Margin="4,0,0,6"
+                                Command="{Binding DisplayAudioSync.CaptureConfigACommand}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Audio device:" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                  ItemsSource="{Binding DisplayAudioSync.AllDevices}"
+                                  SelectedItem="{Binding DisplayAudioSync.ConfigADevice}"
+                                  DisplayMemberPath="Name"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Config B">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,6"
+                                 Text="{Binding DisplayAudioSync.ConfigBName, UpdateSourceTrigger=LostFocus}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Display:" VerticalAlignment="Center" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Margin="0,0,0,6"
+                                 Text="{Binding DisplayAudioSync.ConfigBStatus, Mode=OneWay}"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="Capture now" Margin="4,0,0,6"
+                                Command="{Binding DisplayAudioSync.CaptureConfigBCommand}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Audio device:" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                  ItemsSource="{Binding DisplayAudioSync.AllDevices}"
+                                  SelectedItem="{Binding DisplayAudioSync.ConfigBDevice}"
+                                  DisplayMemberPath="Name"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Toggle Hotkey">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Toggle:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True"
+                                 Text="{Binding DisplayAudioSync.ToggleHotkeyDisplay, Mode=OneWay}"/>
+                        <Button Grid.Column="2" Content="Set" Click="SetToggleHotkey_Click"/>
+                    </Grid>
+                </GroupBox>
+
+            </StackPanel>
+        </TabItem>
+
+    </TabControl>
+</Window>

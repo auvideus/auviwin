@@ -1,0 +1,30 @@
+## Build outputs
+bin/
+obj/
+*.user
+*.suo
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+## Rider / VS / VS Code
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+*.rsuser
+
+## OS
+Thumbs.db
+.DS_Store
+
+## App data (settings are user-local, not committed)
+**/settings.json
+**/settings.json.tmp
+
+## Reference clones — large, already have their own repos
+SoundSwitch/
+AudioDeviceSwitcher/
