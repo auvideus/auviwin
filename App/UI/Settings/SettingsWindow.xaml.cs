@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using AuviWin.Core;
 using AuviWin.Core.Hotkeys;
 using AuviWin.UI.Settings.ViewModels;
 
@@ -12,6 +13,7 @@ public sealed partial class SettingsWindow : Window
     public SettingsWindow(SettingsViewModel vm)
     {
         InitializeComponent();
+        Title = $"{AppInfo.Name} Settings";
         _vm = vm;
         DataContext = vm;
     }

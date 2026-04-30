@@ -1,3 +1,4 @@
+using AuviWin.Core;
 using AuviWin.Core.Audio;
 using AuviWin.Core.Configuration;
 using AuviWin.Core.Display;
@@ -74,7 +75,7 @@ public sealed class DisplayAudioSyncFeature : IDisposable
         try { Toggle(); }
         catch (Exception ex)
         {
-            Notify?.Invoke("AuviWin — Display toggle failed", ex.Message);
+            Notify?.Invoke($"{AppInfo.Name} — Display toggle failed", ex.Message);
         }
     }
 
@@ -83,7 +84,7 @@ public sealed class DisplayAudioSyncFeature : IDisposable
         var cfg = _settings.Current.DisplayAudioSync;
         if (cfg.ConfigA?.DisplaySnapshot is null || cfg.ConfigB?.DisplaySnapshot is null)
         {
-            Notify?.Invoke("AuviWin", "Display configs not set up. Open Settings to configure.");
+            Notify?.Invoke(AppInfo.Name, "Display configs not set up. Open Settings to configure.");
             return;
         }
 
@@ -96,7 +97,7 @@ public sealed class DisplayAudioSyncFeature : IDisposable
 
         if (target.DisplaySnapshot is null)
         {
-            Notify?.Invoke("AuviWin", $"{targetLabel} display not captured. Open Settings to configure.");
+            Notify?.Invoke(AppInfo.Name, $"{targetLabel} display not captured. Open Settings to configure.");
             return;
         }
 
@@ -107,7 +108,7 @@ public sealed class DisplayAudioSyncFeature : IDisposable
 
         // Use deferred notification: fires on WM_TASKBARCREATED (shell restart) or
         // falls back after 3 s. This covers both adding and removing monitors.
-        (NotifyDeferred ?? Notify)?.Invoke("AuviWin", $"Switched to {targetLabel}");
+        (NotifyDeferred ?? Notify)?.Invoke(AppInfo.Name, $"Switched to {targetLabel}");
     }
 
     public void Dispose()

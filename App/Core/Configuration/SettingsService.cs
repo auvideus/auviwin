@@ -8,7 +8,7 @@ public sealed class SettingsService
 {
     private static readonly string SettingsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "AuviWin", "settings.json");
+        AppInfo.Name, "settings.json");
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {

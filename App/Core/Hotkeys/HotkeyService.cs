@@ -163,14 +163,14 @@ public sealed class HotkeyService : IHotkeyService
             cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>(),
             lpfnWndProc = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate),
             hInstance = hInstance,
-            lpszClassName = "AuviWinHotkeyWindow"
+            lpszClassName = $"{AppInfo.Name}HotkeyWindow"
         };
 
         // RegisterClassEx returns 0 on failure; ERROR_CLASS_ALREADY_EXISTS (1410) is safe to ignore
         if (RegisterClassEx(ref wc) == 0 && Marshal.GetLastWin32Error() != 1410)
             return nint.Zero;
 
-        return CreateWindowEx(0, "AuviWinHotkeyWindow", "AuviWin Hotkey",
+        return CreateWindowEx(0, $"{AppInfo.Name}HotkeyWindow", $"{AppInfo.Name} Hotkey",
             0, 0, 0, 0, 0, new nint(-3) /*HWND_MESSAGE*/, nint.Zero, hInstance, nint.Zero);
     }
 

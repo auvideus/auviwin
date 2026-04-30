@@ -1,5 +1,5 @@
 // One-off generator: renders the SVG path (icon.svg, same folder) on a yellow background
-// at multiple sizes and packs them into AuviWin/icon.ico.
+// at multiple sizes and packs them into App/icon.ico.
 //
 // Usage:  dotnet run --project tools/IconGen
 using System;
@@ -19,7 +19,7 @@ const string PathData =
 int[] sizes = [16, 20, 24, 32, 40, 48, 64, 96, 128, 256];
 
 var repoRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
-var outPath = Path.Combine(repoRoot, "AuviWin", "icon.ico");
+var outPath = Path.Combine(repoRoot, "App", "icon.ico");
 
 var pngs = new List<byte[]>();
 foreach (var size in sizes)

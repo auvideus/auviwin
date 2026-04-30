@@ -2,7 +2,7 @@ version: "3"
 
 vars:
   DOTNET: '{{if eq OS "windows"}}C:\Program Files\dotnet\dotnet.exe{{else}}dotnet{{end}}'
-  PROJECT: AuviWin/AuviWin.csproj
+  PROJECT: App/App.csproj
   PUBLISH_DIR: publish
 
 tasks:

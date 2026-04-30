@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using AuviWin.Core;
 using AuviWin.Core.Audio;
 using AuviWin.Core.Configuration;
 
@@ -93,7 +94,7 @@ public sealed class TrayIconManager : IDisposable
     public void UpdateTooltip()
     {
         var device = _audio.GetDefaultRenderDevice();
-        var tip = device is null ? "AuviWin" : $"AuviWin — {device.Name}";
+        var tip = device is null ? AppInfo.Name : $"{AppInfo.Name} — {device.Name}";
         ModifyIcon(tip);
     }
 
@@ -186,7 +187,7 @@ public sealed class TrayIconManager : IDisposable
         uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP,
         uCallbackMessage = TRAY_CALLBACK_MSG,
         hIcon = _hIcon,
-        szTip = "AuviWin",
+        szTip = AppInfo.Name,
         szInfo = "",
         szInfoTitle = "",
         dwInfoFlags = 0,
