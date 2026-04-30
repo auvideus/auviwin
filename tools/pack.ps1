@@ -57,7 +57,7 @@ $signtool  = Find-SdkTool "signtool.exe"
 Write-Host ""
 Write-Host "Publishing..."
 $dotnet = if ($IsWindows) { "C:\Program Files\dotnet\dotnet.exe" } else { "dotnet" }
-& $dotnet publish App\App.csproj `
+& $dotnet publish App/App.csproj `
     -c Release -r win-x64 --self-contained true `
     -p:PublishSingleFile=true `
     -p:IncludeNativeLibrariesForSelfExtract=true `
@@ -69,7 +69,7 @@ if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed." }
 Write-Host ""
 Write-Host "Generating MSIX assets..."
 $assetsDir = Join-Path $StagingDir "Assets"
-& $dotnet run --project tools\IconGen -- --assets $assetsDir
+& $dotnet run --project tools/IconGen -- --assets $assetsDir
 if ($LASTEXITCODE -ne 0) { throw "IconGen --assets failed." }
 
 # ── 4. Stage package layout ───────────────────────────────────────────────────
@@ -80,7 +80,7 @@ Remove-Item -Recurse -Force $StagingDir\* -Exclude "Assets" -ErrorAction Silentl
 New-Item -ItemType Directory -Force $StagingDir | Out-Null
 
 # Manifest (must be named AppxManifest.xml in the package)
-Copy-Item "App\Package.appxmanifest" "$StagingDir\AppxManifest.xml" -Force
+Copy-Item "App/Package.appxmanifest" "$StagingDir/AppxManifest.xml" -Force
 
 # Executable (find the .exe produced by the publish)
 $exe = Get-ChildItem $PublishDir -Filter "*.exe" | Select-Object -First 1
@@ -101,7 +101,7 @@ Write-Host "  Packed: $msix"
 # ── 6. Sign ───────────────────────────────────────────────────────────────────
 
 if (-not (Test-Path $CertPfx)) {
-    throw "Signing certificate not found at '$CertPfx'. Run: powershell tools\cert.ps1 (as Administrator)"
+    throw "Signing certificate not found at '$CertPfx'. Run: powershell tools/cert.ps1 (as Administrator)"
 }
 
 Write-Host ""
