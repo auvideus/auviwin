@@ -25,6 +25,12 @@ Thumbs.db
 **/settings.json
 **/settings.json.tmp
 
+## MSIX distribution artifacts
+certs/
+staging/
+dist/
+App/Assets/
+
 ## Reference clones — large, already have their own repos
 SoundSwitch/
 AudioDeviceSwitcher/

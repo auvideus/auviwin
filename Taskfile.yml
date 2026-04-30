@@ -46,3 +46,31 @@ tasks:
     desc: Restore NuGet packages
     cmds:
       - '"{{.DOTNET}}" restore {{.PROJECT}}'
+
+  # ── MSIX distribution ────────────────────────────────────────────────────────
+
+  cert:
+    desc: "Create & trust a self-signed code-signing cert (run once, as Administrator)"
+    cmds:
+      - powershell -ExecutionPolicy Bypass -File tools\cert.ps1
+
+  assets:
+    desc: Generate MSIX logo PNGs from the icon SVG
+    cmds:
+      - '"{{.DOTNET}}" run --project tools/IconGen -- --assets App/Assets'
+
+  pack:
+    desc: Publish and package as a signed MSIX (output -> dist/AuviWin.msix)
+    cmds:
+      - powershell -ExecutionPolicy Bypass -File tools\pack.ps1
+
+  install:
+    desc: Install the MSIX package on this machine
+    deps: [pack]
+    cmds:
+      - powershell -ExecutionPolicy Bypass -Command "Add-AppxPackage -Path dist\AuviWin.msix"
+
+  uninstall:
+    desc: Uninstall the MSIX package
+    cmds:
+      - powershell -ExecutionPolicy Bypass -Command "Get-AppxPackage -Name AuviWin | Remove-AppxPackage"
