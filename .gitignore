@@ -29,6 +29,7 @@ Thumbs.db
 certs/
 staging/
 dist/
+publish/
 App/Assets/
 
 ## Reference clones — large, already have their own repos

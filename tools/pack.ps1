@@ -64,19 +64,11 @@ $dotnet = if ($IsWindows) { "C:\Program Files\dotnet\dotnet.exe" } else { "dotne
     -o $PublishDir
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed." }
 
-# ── 3. Generate MSIX logo assets ──────────────────────────────────────────────
-
-Write-Host ""
-Write-Host "Generating MSIX assets..."
-$assetsDir = Join-Path $StagingDir "Assets"
-& $dotnet run --project tools/IconGen -- --assets $assetsDir
-if ($LASTEXITCODE -ne 0) { throw "IconGen --assets failed." }
-
-# ── 4. Stage package layout ───────────────────────────────────────────────────
+# ── 3. Stage package layout ───────────────────────────────────────────────────
 
 Write-Host ""
 Write-Host "Staging package layout..."
-Remove-Item -Recurse -Force $StagingDir\* -Exclude "Assets" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force $StagingDir -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force $StagingDir | Out-Null
 
 # Manifest (must be named AppxManifest.xml in the package)
@@ -87,6 +79,15 @@ $exe = Get-ChildItem $PublishDir -Filter "*.exe" | Select-Object -First 1
 if (-not $exe) { throw "No .exe found in $PublishDir after publish." }
 Copy-Item $exe.FullName "$StagingDir\" -Force
 Write-Host "  Staged: $($exe.Name)"
+
+# ── 4. Generate MSIX logo assets ──────────────────────────────────────────────
+
+Write-Host ""
+Write-Host "Generating MSIX assets..."
+$assetsDir = Join-Path $StagingDir "Assets"
+New-Item -ItemType Directory -Force $assetsDir | Out-Null
+& $dotnet run --project tools/IconGen -- --assets $assetsDir
+if ($LASTEXITCODE -ne 0) { throw "IconGen --assets failed." }
 
 # ── 5. makeappx pack ─────────────────────────────────────────────────────────
 

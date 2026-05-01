@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:App.UI.Settings.ViewModels"
         Title="" Height="520" Width="580"
+        Icon="pack://application:,,,/icon.ico"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ShowInTaskbar="False">

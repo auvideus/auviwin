@@ -26,11 +26,12 @@ if (args.Length >= 2 && args[0] == "--assets")
     var dir = args[1];
     Directory.CreateDirectory(dir);
 
-    // Required MSIX logo sizes
-    SavePng(RenderSquare(44),  Path.Combine(dir, "Square44x44Logo.png"));
-    SavePng(RenderSquare(50),  Path.Combine(dir, "StoreLogo.png"));
-    SavePng(RenderSquare(150), Path.Combine(dir, "Square150x150Logo.png"));
-    SavePng(RenderWide(310, 150), Path.Combine(dir, "Wide310x150Logo.png"));
+    // Generate at 2× (scale-200) so Windows scales DOWN on HiDPI instead of up.
+    // Windows picks the closest scale variant automatically.
+    SavePng(RenderSquare(88),     Path.Combine(dir, "Square44x44Logo.scale-200.png"));
+    SavePng(RenderSquare(100),    Path.Combine(dir, "StoreLogo.scale-200.png"));
+    SavePng(RenderSquare(300),    Path.Combine(dir, "Square150x150Logo.scale-200.png"));
+    SavePng(RenderWide(620, 300), Path.Combine(dir, "Wide310x150Logo.scale-200.png"));
 
     Console.WriteLine($"Wrote MSIX assets to {dir}");
     return;

@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using App.Core;
@@ -161,7 +160,15 @@ public sealed class TrayIconManager : IDisposable
         exitItem.Click += (_, _) => ExitRequested?.Invoke();
         menu.Items.Add(exitItem);
 
+        // Win32 KB135788: must set our window as foreground before opening the menu.
+        // Without this, Windows won't deliver the "click outside" message and the
+        // menu stays open indefinitely.
+        SetForegroundWindow(_hwnd);
         menu.IsOpen = true;
+
+        // After the menu closes, post a null message to flush the foreground lock
+        // so subsequent right-clicks open the menu correctly.
+        menu.Closed += (_, _) => PostMessage(_hwnd, 0x0000 /*WM_NULL*/, 0, 0);
     }
 
     private void AddIcon()
@@ -196,10 +203,13 @@ public sealed class TrayIconManager : IDisposable
 
     private static nint LoadDefaultIcon()
     {
-        // Use the app's embedded icon, or fall back to a system icon
-        var exePath = Assembly.GetExecutingAssembly().Location;
-        ExtractIconEx(exePath, 0, nint.Zero, out var hIconSmall, 1);
-        if (hIconSmall != nint.Zero) return hIconSmall;
+        // Assembly.Location is empty in a single-file publish; use ProcessPath instead.
+        var exePath = Environment.ProcessPath;
+        if (!string.IsNullOrEmpty(exePath))
+        {
+            ExtractIconEx(exePath, 0, nint.Zero, out var hIconSmall, 1);
+            if (hIconSmall != nint.Zero) return hIconSmall;
+        }
         return LoadIcon(nint.Zero, new nint(32512) /*IDI_APPLICATION*/);
     }
 
@@ -238,6 +248,8 @@ public sealed class TrayIconManager : IDisposable
     [DllImport("user32.dll")] private static extern nint LoadIcon(nint hInstance, nint lpIconName);
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)] private static extern int ExtractIconEx(string lpszFile, int nIconIndex, nint phiconLarge, out nint phiconSmall, int nIcons);
     [DllImport("user32.dll")] private static extern bool DestroyIcon(nint hIcon);
+    [DllImport("user32.dll")] private static extern bool SetForegroundWindow(nint hWnd);
+    [DllImport("user32.dll")] private static extern bool PostMessage(nint hWnd, uint msg, nint wParam, nint lParam);
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     private struct NOTIFYICONDATA
