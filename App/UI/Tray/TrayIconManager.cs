@@ -101,9 +101,9 @@ public sealed class TrayIconManager : IDisposable
     {
         var data = BuildNotifyIconData();
         data.uFlags |= NIF_INFO;
-        data.szInfoTitle = title;
+        data.szInfoTitle = "";
         data.szInfo = message;
-        data.dwInfoFlags = NIIF_INFO;
+        data.dwInfoFlags = 0;
         data.uTimeout = 3000;
         Shell_NotifyIcon(NIM_MODIFY, ref data);
     }
