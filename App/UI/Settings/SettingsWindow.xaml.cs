@@ -24,7 +24,6 @@ public sealed partial class SettingsWindow : Window
         base.OnActivated(e);
         _vm.AudioCycle.Load();
         _vm.DisplayAudioSync.Load();
-        _vm.ThemeSchedule.Load();
     }
 
     // ── Hotkey capture helpers ────────────────────────────────────────────────

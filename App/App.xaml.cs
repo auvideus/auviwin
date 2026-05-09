@@ -5,7 +5,6 @@ using App.Core.Display;
 using App.Core.Hotkeys;
 using App.Features.AudioCycle;
 using App.Features.DisplayAudioSync;
-using App.Features.ThemeSchedule;
 using App.UI.Settings;
 using App.UI.Settings.ViewModels;
 using App.UI.Tray;
@@ -20,7 +19,6 @@ public partial class WpfApp : Application
     private HotkeyService? _hotkeys;
     private AudioCycleFeature? _audioCycle;
     private DisplayAudioSyncFeature? _displaySync;
-    private ThemeScheduleFeature? _themeSchedule;
     private SettingsWindow? _settingsWindow;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -40,9 +38,7 @@ public partial class WpfApp : Application
         services.AddSingleton<DisplayAudioSyncFeature>();
         services.AddSingleton<AudioCycleViewModel>();
         services.AddSingleton<DisplayAudioSyncViewModel>();
-        services.AddSingleton<ThemeScheduleViewModel>();
         services.AddSingleton<SettingsViewModel>();
-        services.AddSingleton<ThemeScheduleFeature>();
 
         _services = services.BuildServiceProvider();
 
@@ -54,14 +50,8 @@ public partial class WpfApp : Application
         _hotkeys = (HotkeyService)_services.GetRequiredService<IHotkeyService>();
         _audioCycle = _services.GetRequiredService<AudioCycleFeature>();
         _displaySync = _services.GetRequiredService<DisplayAudioSyncFeature>();
-        _themeSchedule = _services.GetRequiredService<ThemeScheduleFeature>();
         _audioCycle.ApplySettings();
         _displaySync.ApplySettings();
-        _themeSchedule.ApplySettings();
-
-        // Wire up ViewModel→Feature for immediate theme application on save
-        var themeVm = _services.GetRequiredService<ThemeScheduleViewModel>();
-        themeVm.SettingsChanged += () => _themeSchedule.ApplySettings();
 
         // ── Create tray host window (message-only, invisible) ─────────────
         var host = new TrayHostWindow();
@@ -106,7 +96,6 @@ public partial class WpfApp : Application
         _tray?.Dispose();
         _audioCycle?.Dispose();
         _displaySync?.Dispose();
-        _themeSchedule?.Dispose();
         _hotkeys?.Dispose();
         _services?.Dispose();        base.OnExit(e);
     }

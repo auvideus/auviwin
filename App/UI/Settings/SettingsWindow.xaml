@@ -95,45 +95,6 @@
             </StackPanel>
         </TabItem>
 
-        <!-- ── Theme Schedule ─────────────────────────────────────────── -->
-        <TabItem Header="Theme Schedule">
-            <StackPanel Margin="8">
-                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" Foreground="Gray"
-                           Text="Automatically switch the Windows color theme between dark and light mode at the times you specify."/>
-
-                <CheckBox Content="Enable automatic dark / light switching"
-                          IsChecked="{Binding ThemeSchedule.IsEnabled}"
-                          Margin="0,0,0,12" FontWeight="SemiBold"/>
-
-                <GroupBox Header="Schedule">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Dark mode at:" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"
-                                 Text="{Binding ThemeSchedule.DarkModeTime, UpdateSourceTrigger=LostFocus}"
-                                 ToolTip="24-hour format, e.g. 20:00"/>
-
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Light mode at:" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="1"
-                                 Text="{Binding ThemeSchedule.LightModeTime, UpdateSourceTrigger=LostFocus}"
-                                 ToolTip="24-hour format, e.g. 07:00"/>
-                    </Grid>
-                </GroupBox>
-
-                <TextBlock Margin="0,10,0,0" Foreground="Gray" FontStyle="Italic"
-                           Text="{Binding ThemeSchedule.StatusText, Mode=OneWay}"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-        </TabItem>
-
         <!-- ── Display + Audio Sync ───────────────────────────────────── -->
         <TabItem Header="Display + Audio">
             <StackPanel Margin="8">
